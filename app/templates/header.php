@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= e($page_title ?? 'TransactiWar') ?></title>
+
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YcnS/1TyAb2x40hLMC3OP5r3Y7gEFEc9FhR" crossorigin="anonymous">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<?php if (is_logged_in()): ?>
+<!-- Navbar for logged-in users -->
+<nav class="navbar navbar-expand-lg tw-navbar sticky-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="/dashboard">
+            <i class="bi bi-shield-lock-fill me-1"></i>TransactiWar
+        </a>
+
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navMain">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link <?= ($route ?? '') === 'dashboard' ? 'active' : '' ?>" href="/dashboard">
+                        <i class="bi bi-grid-1x2 me-1"></i>Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= ($route ?? '') === 'transfer' ? 'active' : '' ?>" href="/transfer">
+                        <i class="bi bi-send me-1"></i>Transfer
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= ($route ?? '') === 'history' ? 'active' : '' ?>" href="/history">
+                        <i class="bi bi-clock-history me-1"></i>History
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= ($route ?? '') === 'search' ? 'active' : '' ?>" href="/search">
+                        <i class="bi bi-search me-1"></i>Search
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link <?= ($route ?? '') === 'profile' ? 'active' : '' ?>" href="/profile">
+                        <i class="bi bi-person-circle me-1"></i><?= e(current_username() ?? '') ?>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <form method="POST" action="/logout" class="d-inline">
+                        <?= csrf_field() ?>
+                        <button type="submit" class="nav-link btn btn-link text-decoration-none">
+                            <i class="bi bi-box-arrow-right me-1"></i>Logout
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<?php endif; ?>
+
+<main class="<?= is_logged_in() ? 'tw-main' : 'tw-main-guest' ?>">
+    <div class="container">
+        <?php include __DIR__ . '/alerts.php'; ?>

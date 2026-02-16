@@ -1,0 +1,478 @@
+/* TransactiWar — Clean Fintech UI */
+
+:root {
+    --tw-primary:       #2563eb;
+    --tw-primary-hover: #1d4ed8;
+    --tw-primary-light: #dbeafe;
+    --tw-success:       #16a34a;
+    --tw-success-light: #dcfce7;
+    --tw-danger:        #dc2626;
+    --tw-danger-light:  #fee2e2;
+    --tw-warning:       #d97706;
+    --tw-bg:            #f1f5f9;
+    --tw-card-bg:       #ffffff;
+    --tw-text:          #1e293b;
+    --tw-text-muted:    #64748b;
+    --tw-border:        #e2e8f0;
+    --tw-shadow:        0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+    --tw-shadow-md:     0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    --tw-shadow-lg:     0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+    --tw-radius:        0.75rem;
+    --tw-radius-sm:     0.5rem;
+    --tw-radius-lg:     1rem;
+    --tw-transition:    all 0.15s ease-in-out;
+}
+
+/* Reset & Base */
+* { box-sizing: border-box; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--tw-bg);
+    color: var(--tw-text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navbar */
+.tw-navbar {
+    background: var(--tw-card-bg);
+    border-bottom: 1px solid var(--tw-border);
+    box-shadow: var(--tw-shadow);
+    padding: 0.5rem 0;
+}
+
+.tw-navbar .navbar-brand {
+    color: var(--tw-primary);
+    font-size: 1.15rem;
+    letter-spacing: -0.01em;
+}
+
+.tw-navbar .nav-link {
+    color: var(--tw-text-muted);
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--tw-radius-sm);
+    transition: var(--tw-transition);
+}
+
+.tw-navbar .nav-link:hover,
+.tw-navbar .nav-link.active {
+    color: var(--tw-primary);
+    background: var(--tw-primary-light);
+}
+
+/* Main content */
+.tw-main {
+    flex: 1;
+    padding: 1.5rem 0;
+}
+
+.tw-main-guest {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 0;
+    min-height: 100vh;
+}
+
+/* Footer */
+.tw-footer {
+    padding: 1rem 0;
+    border-top: 1px solid var(--tw-border);
+}
+
+/* Cards */
+.tw-card {
+    background: var(--tw-card-bg);
+    border: 1px solid var(--tw-border);
+    border-radius: var(--tw-radius);
+    box-shadow: var(--tw-shadow);
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+    transition: var(--tw-transition);
+}
+
+.tw-card:hover {
+    box-shadow: var(--tw-shadow-md);
+}
+
+.tw-card-header {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--tw-text-muted);
+    margin-bottom: 0.75rem;
+}
+
+/* Auth card (login/register) */
+.tw-auth-card {
+    background: var(--tw-card-bg);
+    border: 1px solid var(--tw-border);
+    border-radius: var(--tw-radius-lg);
+    box-shadow: var(--tw-shadow-lg);
+    padding: 2rem;
+    width: 100%;
+    max-width: 420px;
+}
+
+.tw-auth-brand {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.tw-auth-brand h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--tw-primary);
+    margin-bottom: 0.25rem;
+}
+
+.tw-auth-brand p {
+    font-size: 0.875rem;
+    color: var(--tw-text-muted);
+}
+
+/* Balance display */
+.tw-balance {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--tw-primary);
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+}
+
+.tw-balance-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--tw-text-muted);
+}
+
+/* Transaction amounts */
+.tw-amount-positive {
+    color: var(--tw-success);
+    font-weight: 600;
+}
+
+.tw-amount-negative {
+    color: var(--tw-danger);
+    font-weight: 600;
+}
+
+/* Forms */
+.form-control, .form-select {
+    border: 1px solid var(--tw-border);
+    border-radius: var(--tw-radius-sm);
+    padding: 0.625rem 0.875rem;
+    font-size: 0.9rem;
+    transition: var(--tw-transition);
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--tw-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.form-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--tw-text);
+    margin-bottom: 0.375rem;
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Buttons */
+.btn-primary {
+    background: var(--tw-primary);
+    border: none;
+    border-radius: var(--tw-radius-sm);
+    padding: 0.625rem 1.25rem;
+    font-weight: 500;
+    font-size: 0.9rem;
+    box-shadow: var(--tw-shadow);
+    transition: var(--tw-transition);
+}
+
+.btn-primary:hover {
+    background: var(--tw-primary-hover);
+    box-shadow: var(--tw-shadow-md);
+    transform: translateY(-1px);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-outline-primary {
+    border: 1px solid var(--tw-primary);
+    color: var(--tw-primary);
+    border-radius: var(--tw-radius-sm);
+    padding: 0.625rem 1.25rem;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: var(--tw-transition);
+}
+
+.btn-outline-primary:hover {
+    background: var(--tw-primary);
+    border-color: var(--tw-primary);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.btn-outline-secondary {
+    border: 1px solid var(--tw-border);
+    color: var(--tw-text-muted);
+    border-radius: var(--tw-radius-sm);
+    transition: var(--tw-transition);
+}
+
+.btn-outline-secondary:hover {
+    border-color: var(--tw-text-muted);
+    color: var(--tw-text);
+    background: var(--tw-bg);
+}
+
+/* Tables */
+.tw-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.tw-table thead th {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--tw-text-muted);
+    padding: 0.75rem 1rem;
+    border-bottom: 2px solid var(--tw-border);
+    white-space: nowrap;
+}
+
+.tw-table tbody td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--tw-border);
+    font-size: 0.875rem;
+    vertical-align: middle;
+}
+
+.tw-table tbody tr:hover {
+    background: var(--tw-bg);
+}
+
+.tw-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Alerts */
+.tw-alert {
+    border: none;
+    border-radius: var(--tw-radius-sm);
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.75rem 1rem;
+}
+
+/* Avatar */
+.tw-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--tw-border);
+}
+
+.tw-avatar-lg {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--tw-border);
+}
+
+/* Stat card */
+.tw-stat {
+    text-align: center;
+    padding: 1.25rem;
+}
+
+.tw-stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--tw-text);
+}
+
+.tw-stat-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--tw-text-muted);
+    margin-top: 0.25rem;
+}
+
+/* User search result item */
+.tw-user-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--tw-border);
+    transition: var(--tw-transition);
+    text-decoration: none;
+    color: var(--tw-text);
+}
+
+.tw-user-item:hover {
+    background: var(--tw-bg);
+    color: var(--tw-primary);
+}
+
+.tw-user-item:last-child {
+    border-bottom: none;
+}
+
+/* Badge */
+.tw-badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.tw-badge-sent {
+    background: var(--tw-danger-light);
+    color: var(--tw-danger);
+}
+
+.tw-badge-received {
+    background: var(--tw-success-light);
+    color: var(--tw-success);
+}
+
+/* Pagination */
+.tw-pagination .page-link {
+    border: 1px solid var(--tw-border);
+    color: var(--tw-text);
+    font-size: 0.875rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--tw-radius-sm);
+    margin: 0 0.125rem;
+    transition: var(--tw-transition);
+}
+
+.tw-pagination .page-link:hover {
+    background: var(--tw-primary-light);
+    color: var(--tw-primary);
+    border-color: var(--tw-primary);
+}
+
+.tw-pagination .page-item.active .page-link {
+    background: var(--tw-primary);
+    border-color: var(--tw-primary);
+    color: #fff;
+}
+
+/* Quick actions grid */
+.tw-quick-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.75rem;
+}
+
+.tw-quick-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: var(--tw-card-bg);
+    border: 1px solid var(--tw-border);
+    border-radius: var(--tw-radius);
+    text-decoration: none;
+    color: var(--tw-text);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    transition: var(--tw-transition);
+}
+
+.tw-quick-action:hover {
+    border-color: var(--tw-primary);
+    color: var(--tw-primary);
+    box-shadow: var(--tw-shadow-md);
+    transform: translateY(-2px);
+}
+
+.tw-quick-action i {
+    font-size: 1.25rem;
+    color: var(--tw-primary);
+}
+
+/* Empty state */
+.tw-empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--tw-text-muted);
+}
+
+.tw-empty i {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 0.75rem;
+    opacity: 0.5;
+}
+
+/* Responsive table wrapper */
+.tw-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .tw-main { padding: 1rem 0; }
+    .tw-card { padding: 1rem; }
+    .tw-balance { font-size: 1.75rem; }
+    .tw-auth-card { padding: 1.5rem; margin: 0 1rem; }
+    .tw-avatar-lg { width: 72px; height: 72px; }
+}
+
+/* Smooth focus for accessibility */
+:focus-visible {
+    outline: 2px solid var(--tw-primary);
+    outline-offset: 2px;
+}
+
+/* Comment text in transaction history */
+.tw-comment {
+    font-size: 0.8125rem;
+    color: var(--tw-text-muted);
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Profile bio */
+.tw-bio {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--tw-text);
+}
