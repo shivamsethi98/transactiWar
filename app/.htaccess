@@ -6,17 +6,17 @@ Options -Indexes
 # Rewrite engine
 RewriteEngine On
 
-# Don't rewrite actual files/directories (CSS, JS, images)
-RewriteCond %{REQUEST_URI} ^/assets/ [OR]
-RewriteCond %{REQUEST_FILENAME} -f
+# Block direct access to core/ and templates/ directories FIRST
+RewriteRule ^core/ - [F,L]
+RewriteRule ^templates/ - [F,L]
+RewriteRule ^pages/ - [F,L]
+
+# Don't rewrite actual static assets (CSS, JS, images only)
+RewriteCond %{REQUEST_URI} ^/assets/
 RewriteRule ^ - [L]
 
 # Route everything else through index.php
 RewriteRule ^ index.php [L,QSA]
-
-# Block direct access to core/ and templates/ directories
-RewriteRule ^core/ - [F,L]
-RewriteRule ^templates/ - [F,L]
 
 # Block access to .htaccess itself
 <Files ".htaccess">

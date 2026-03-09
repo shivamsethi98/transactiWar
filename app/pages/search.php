@@ -23,7 +23,9 @@ if ($query !== '') {
                 'SELECT id, username, full_name, avatar_path FROM users
                  WHERE username LIKE ? ORDER BY username LIMIT 20'
             );
-            $stmt->execute(['%' . $query . '%']);
+            // Escape LIKE wildcards to prevent user enumeration
+            $safe_query = str_replace(['%', '_'], ['\\%', '\\_'], $query);
+            $stmt->execute(['%' . $safe_query . '%']);
         }
 
         $results = $stmt->fetchAll();

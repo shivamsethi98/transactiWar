@@ -14,7 +14,13 @@ function init_session(): void
     ini_set('session.use_only_cookies', '1');
     ini_set('session.cookie_httponly', '1');
     ini_set('session.cookie_samesite', 'Strict');
+    ini_set('session.cookie_path', '/');
     ini_set('session.gc_maxlifetime', '1800');
+
+    // Set Secure flag if served over HTTPS
+    if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
+        ini_set('session.cookie_secure', '1');
+    }
 
     session_start();
 
@@ -50,8 +56,14 @@ function init_session(): void
 
 function generate_fingerprint(): string
 {
-    $secret = getenv('APP_SECRET') ?: 'fallback_secret_change_me';
-    $data   = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
+    $secret = getenv('APP_SECRET');
+    if (!$secret) {
+        error_log('CRITICAL: APP_SECRET environment variable is not set');
+        http_response_code(500);
+        exit;
+    }
+    $data = ($_SERVER['HTTP_USER_AGENT'] ?? 'unknown')
+          . '|' . ($_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? '');
     return hash_hmac('sha256', $data, $secret);
 }
 

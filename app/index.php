@@ -15,6 +15,19 @@ require_once __DIR__ . '/core/rate_limiter.php';
 require_once __DIR__ . '/core/upload.php';
 require_once __DIR__ . '/core/helpers.php';
 
+// Security headers (defense in depth — also set via Apache)
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: DENY');
+header('Cache-Control: no-store, no-cache, must-revalidate');
+header('Pragma: no-cache');
+
+// Only allow GET and POST methods
+if (!in_array($_SERVER['REQUEST_METHOD'], ['GET', 'POST'], true)) {
+    http_response_code(405);
+    header('Allow: GET, POST');
+    exit;
+}
+
 // Initialize session
 init_session();
 

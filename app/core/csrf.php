@@ -28,8 +28,10 @@ function csrf_validate(): bool
     // Timing-safe comparison
     $valid = hash_equals($_SESSION['csrf_token'], $token);
 
-    // Regenerate token after validation (one-time use)
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    // Only regenerate on successful validation — prevents breaking multi-tab usage
+    if ($valid) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
 
     return $valid;
 }

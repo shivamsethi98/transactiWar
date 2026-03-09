@@ -51,6 +51,10 @@ function validate_password(string $password): array
     if (strlen($password) < 8) {
         $errors[] = 'Password must be at least 8 characters.';
     }
+    if (strlen($password) > 72) {
+        // bcrypt silently truncates at 72 bytes — reject to avoid false sense of security
+        $errors[] = 'Password must not exceed 72 characters.';
+    }
     if (!preg_match('/[A-Z]/', $password)) {
         $errors[] = 'Password must contain an uppercase letter.';
     }

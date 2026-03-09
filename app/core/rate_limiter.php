@@ -30,7 +30,7 @@ function check_rate_limit(string $identifier, string $action, int $max_attempts,
         return true;
     } catch (PDOException $ex) {
         error_log('Rate limiter error: ' . $ex->getMessage());
-        return true; // Fail open — don't block legitimate users on DB error
+        return false; // Fail closed — block on DB error to prevent bypass
     }
 }
 

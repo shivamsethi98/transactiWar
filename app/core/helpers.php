@@ -20,6 +20,10 @@ function get_flash(): array
 
 function redirect(string $url): void
 {
+    // Only allow relative paths — prevent open redirect and header injection
+    if (!str_starts_with($url, '/') || str_contains($url, '//') || str_contains($url, "\n") || str_contains($url, "\r")) {
+        $url = '/dashboard';
+    }
     header('Location: ' . $url);
     exit;
 }

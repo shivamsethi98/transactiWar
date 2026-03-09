@@ -16,8 +16,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? '';
     $ip       = get_client_ip();
 
+    // Reject oversized passwords early to prevent bcrypt DoS
+    if (strlen($password) > 72) {
+        $error = 'Invalid username or password.';
     // Rate limit check
-    if (!check_login_rate_limit($ip, $username)) {
+    } elseif (!check_login_rate_limit($ip, $username)) {
         $error = 'Too many login attempts. Please wait 15 minutes.';
     } else {
         $pdo  = get_db();
