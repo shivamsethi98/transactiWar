@@ -38,7 +38,7 @@ include __DIR__ . '/../templates/header.php';
 <!-- Balance & Quick Actions -->
 <div class="row g-4 mb-4">
     <div class="col-md-6">
-        <div class="tw-card">
+        <div class="tw-card tw-balance-card">
             <div class="tw-balance-label">Your Balance</div>
             <div class="tw-balance">Rs. <?= format_money($user['balance']) ?></div>
             <p class="text-muted mt-1 mb-0" style="font-size: 0.8rem;">

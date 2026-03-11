@@ -41,13 +41,13 @@ docker compose down -v    # Stop and remove all data (fresh start)
 
 Five pre-created accounts are available for evaluation:
 
-| Username   | Password     | Starting Balance |
-|------------|-------------|-----------------|
-| testuser1  | TestPass1!  | Rs. 100.00      |
-| testuser2  | TestPass2!  | Rs. 100.00      |
-| testuser3  | TestPass3!  | Rs. 100.00      |
-| testuser4  | TestPass4!  | Rs. 100.00      |
-| testuser5  | TestPass5!  | Rs. 100.00      |
+| Username        | Password            | Full Name       | Starting Balance |
+|-----------------|---------------------|-----------------|-----------------|
+| alice_sharma    | Alice@Secure#2026   | Alice Sharma    | Rs. 100.00      |
+| bob_kumar       | Bob#Strong@Pass9    | Bob Kumar       | Rs. 100.00      |
+| charlie_reddy   | Charlie#War@2026    | Charlie Reddy   | Rs. 100.00      |
+| diana_patel     | Diana@Transact#7    | Diana Patel     | Rs. 100.00      |
+| eve_gupta       | Eve#Guard@2026      | Eve Gupta       | Rs. 100.00      |
 
 New accounts registered through the app also start with Rs. 100.00.
 

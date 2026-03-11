@@ -1,73 +1,127 @@
-/* TransactiWar — Clean Fintech UI */
+/* TransactiWar — Modern Secure Banking UI v2 */
 
 :root {
-    --tw-primary:       #2563eb;
-    --tw-primary-hover: #1d4ed8;
-    --tw-primary-light: #dbeafe;
-    --tw-success:       #16a34a;
-    --tw-success-light: #dcfce7;
+    --tw-primary:       #4f46e5;
+    --tw-primary-hover: #4338ca;
+    --tw-primary-light: #eef2ff;
+    --tw-primary-rgb:   79, 70, 229;
+    --tw-accent:        #7c3aed;
+    --tw-accent-rgb:    124, 58, 237;
+    --tw-success:       #059669;
+    --tw-success-light: #d1fae5;
     --tw-danger:        #dc2626;
     --tw-danger-light:  #fee2e2;
     --tw-warning:       #d97706;
-    --tw-bg:            #f1f5f9;
+    --tw-warning-light: #fef3c7;
+    --tw-bg:            #f0f2f5;
+    --tw-bg-alt:        #e8eaed;
     --tw-card-bg:       #ffffff;
-    --tw-text:          #1e293b;
+    --tw-text:          #0f172a;
     --tw-text-muted:    #64748b;
     --tw-border:        #e2e8f0;
-    --tw-shadow:        0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
-    --tw-shadow-md:     0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-    --tw-shadow-lg:     0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+    --tw-shadow:        0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.08);
+    --tw-shadow-md:     0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+    --tw-shadow-lg:     0 10px 30px rgba(0,0,0,0.1), 0 4px 8px rgba(0,0,0,0.05);
+    --tw-shadow-xl:     0 20px 50px rgba(0,0,0,0.12), 0 8px 16px rgba(0,0,0,0.06);
     --tw-radius:        0.75rem;
     --tw-radius-sm:     0.5rem;
     --tw-radius-lg:     1rem;
-    --tw-transition:    all 0.15s ease-in-out;
+    --tw-radius-xl:     1.25rem;
+    --tw-transition:    all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Reset & Base */
+/* ============================
+   RESET & BASE
+   ============================ */
 * { box-sizing: border-box; }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background-color: var(--tw-bg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--tw-bg);
     color: var(--tw-text);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.6;
 }
 
-/* Navbar */
+/* ============================
+   NAVBAR — Dark gradient
+   ============================ */
 .tw-navbar {
-    background: var(--tw-card-bg);
-    border-bottom: 1px solid var(--tw-border);
-    box-shadow: var(--tw-shadow);
-    padding: 0.5rem 0;
+    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #3730a3 100%);
+    border-bottom: none;
+    box-shadow: 0 4px 20px rgba(30, 27, 75, 0.3);
+    padding: 0.6rem 0;
+    z-index: 1030;
 }
 
 .tw-navbar .navbar-brand {
-    color: var(--tw-primary);
-    font-size: 1.15rem;
-    letter-spacing: -0.01em;
+    color: #fff !important;
+    font-size: 1.2rem;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.tw-navbar .navbar-brand i {
+    font-size: 1.35rem;
+    color: #a5b4fc;
+}
+
+.tw-navbar .navbar-toggler {
+    border-color: rgba(255,255,255,0.2);
+    color: #fff;
+}
+
+.tw-navbar .navbar-toggler-icon {
+    filter: invert(1);
 }
 
 .tw-navbar .nav-link {
-    color: var(--tw-text-muted);
-    font-size: 0.875rem;
+    color: rgba(255,255,255,0.7) !important;
+    font-size: 0.85rem;
     font-weight: 500;
-    padding: 0.5rem 0.75rem;
+    padding: 0.5rem 0.9rem;
     border-radius: var(--tw-radius-sm);
     transition: var(--tw-transition);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
 }
 
-.tw-navbar .nav-link:hover,
+.tw-navbar .nav-link:hover {
+    color: #fff !important;
+    background: rgba(255,255,255,0.1);
+}
+
 .tw-navbar .nav-link.active {
-    color: var(--tw-primary);
-    background: var(--tw-primary-light);
+    color: #fff !important;
+    background: rgba(255,255,255,0.15);
+    font-weight: 600;
 }
 
-/* Main content */
+.tw-navbar .btn-link {
+    color: rgba(255,255,255,0.7) !important;
+}
+
+.tw-navbar .btn-link:hover {
+    color: #fca5a5 !important;
+    background: rgba(255,255,255,0.1);
+    border-radius: var(--tw-radius-sm);
+}
+
+/* ============================
+   LAYOUT
+   ============================ */
 .tw-main {
     flex: 1;
-    padding: 1.5rem 0;
+    padding: 2rem 0;
 }
 
 .tw-main-guest {
@@ -77,19 +131,53 @@ body {
     justify-content: center;
     padding: 2rem 0;
     min-height: 100vh;
+    background: linear-gradient(135deg, #1e1b4b 0%, #3730a3 30%, #6d28d9 60%, #7c3aed 100%);
+    position: relative;
+    overflow: hidden;
 }
 
-/* Footer */
+.tw-main-guest::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -30%;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(167,139,250,0.2) 0%, transparent 70%);
+    animation: float 8s ease-in-out infinite;
+}
+
+.tw-main-guest::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -20%;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%);
+    animation: float 10s ease-in-out infinite reverse;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-30px) rotate(3deg); }
+}
+
 .tw-footer {
-    padding: 1rem 0;
+    padding: 1.25rem 0;
     border-top: 1px solid var(--tw-border);
+    background: var(--tw-card-bg);
 }
 
-/* Cards */
+/* ============================
+   CARDS
+   ============================ */
 .tw-card {
     background: var(--tw-card-bg);
     border: 1px solid var(--tw-border);
-    border-radius: var(--tw-radius);
+    border-radius: var(--tw-radius-lg);
     box-shadow: var(--tw-shadow);
     padding: 1.5rem;
     margin-bottom: 1.25rem;
@@ -98,85 +186,180 @@ body {
 
 .tw-card:hover {
     box-shadow: var(--tw-shadow-md);
+    transform: translateY(-1px);
 }
 
 .tw-card-header {
-    font-size: 0.8rem;
-    font-weight: 600;
+    font-size: 0.72rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
     color: var(--tw-text-muted);
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
 }
 
-/* Auth card (login/register) */
+/* ============================
+   AUTH CARD (login/register)
+   ============================ */
 .tw-auth-card {
     background: var(--tw-card-bg);
-    border: 1px solid var(--tw-border);
-    border-radius: var(--tw-radius-lg);
-    box-shadow: var(--tw-shadow-lg);
-    padding: 2rem;
+    border: none;
+    border-radius: var(--tw-radius-xl);
+    box-shadow: var(--tw-shadow-xl), 0 0 80px rgba(99,102,241,0.1);
+    padding: 2.75rem;
     width: 100%;
-    max-width: 420px;
+    max-width: 440px;
+    position: relative;
+    z-index: 1;
+    backdrop-filter: blur(20px);
 }
 
 .tw-auth-brand {
     text-align: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
 }
 
 .tw-auth-brand h1 {
-    font-size: 1.5rem;
-    font-weight: 700;
+    font-size: 1.65rem;
+    font-weight: 900;
     color: var(--tw-primary);
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.375rem;
+    letter-spacing: -0.04em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+}
+
+.tw-auth-brand h1 i {
+    background: linear-gradient(135deg, var(--tw-primary), var(--tw-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .tw-auth-brand p {
-    font-size: 0.875rem;
+    font-size: 0.9rem;
     color: var(--tw-text-muted);
+    margin: 0;
 }
 
-/* Balance display */
+/* ============================
+   BALANCE DISPLAY
+   ============================ */
 .tw-balance {
-    font-size: 2.25rem;
-    font-weight: 700;
+    font-size: 2.5rem;
+    font-weight: 900;
     color: var(--tw-primary);
-    letter-spacing: -0.025em;
-    line-height: 1.2;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
 }
 
 .tw-balance-label {
-    font-size: 0.8rem;
-    font-weight: 600;
+    font-size: 0.68rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.12em;
     color: var(--tw-text-muted);
+    margin-bottom: 0.3rem;
 }
 
-/* Transaction amounts */
+/* ============================
+   BALANCE CARD (gradient on dashboard)
+   ============================ */
+.tw-balance-card {
+    background: linear-gradient(135deg, #1e1b4b 0%, #3730a3 40%, #6d28d9 100%);
+    border: none;
+    border-radius: var(--tw-radius-lg);
+    padding: 2rem;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(30, 27, 75, 0.35);
+}
+
+.tw-balance-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 50px rgba(30, 27, 75, 0.4);
+}
+
+.tw-balance-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -25%;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+}
+
+.tw-balance-card::after {
+    content: '';
+    position: absolute;
+    bottom: -40%;
+    left: -15%;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+}
+
+.tw-balance-card .tw-balance-label {
+    color: rgba(255,255,255,0.65);
+}
+
+.tw-balance-card .tw-balance {
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.tw-balance-card .text-muted {
+    color: rgba(255,255,255,0.55) !important;
+}
+
+/* ============================
+   TRANSFER BALANCE BOX
+   ============================ */
+.tw-transfer-balance {
+    background: linear-gradient(135deg, var(--tw-primary-light) 0%, #ede9fe 100%);
+    border: 1px solid rgba(var(--tw-primary-rgb), 0.1);
+    border-radius: var(--tw-radius);
+    padding: 1.25rem;
+    text-align: center;
+}
+
+/* ============================
+   TRANSACTION AMOUNTS
+   ============================ */
 .tw-amount-positive {
     color: var(--tw-success);
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .tw-amount-negative {
     color: var(--tw-danger);
-    font-weight: 600;
+    font-weight: 700;
 }
 
-/* Forms */
+/* ============================
+   FORMS
+   ============================ */
 .form-control, .form-select {
-    border: 1px solid var(--tw-border);
+    border: 1.5px solid var(--tw-border);
     border-radius: var(--tw-radius-sm);
-    padding: 0.625rem 0.875rem;
+    padding: 0.7rem 0.9rem;
     font-size: 0.9rem;
     transition: var(--tw-transition);
+    background: var(--tw-card-bg);
 }
 
 .form-control:focus, .form-select:focus {
     border-color: var(--tw-primary);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    box-shadow: 0 0 0 4px rgba(var(--tw-primary-rgb), 0.12);
 }
 
 .form-label {
@@ -188,62 +371,76 @@ body {
 
 textarea.form-control {
     resize: vertical;
-    min-height: 80px;
+    min-height: 90px;
 }
 
-/* Buttons */
+/* ============================
+   BUTTONS
+   ============================ */
 .btn-primary {
-    background: var(--tw-primary);
+    background: linear-gradient(135deg, var(--tw-primary) 0%, var(--tw-accent) 100%);
     border: none;
     border-radius: var(--tw-radius-sm);
-    padding: 0.625rem 1.25rem;
-    font-weight: 500;
+    padding: 0.7rem 1.5rem;
+    font-weight: 600;
     font-size: 0.9rem;
-    box-shadow: var(--tw-shadow);
+    box-shadow: 0 2px 8px rgba(var(--tw-primary-rgb), 0.35);
     transition: var(--tw-transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    color: #fff;
 }
 
 .btn-primary:hover {
-    background: var(--tw-primary-hover);
-    box-shadow: var(--tw-shadow-md);
-    transform: translateY(-1px);
+    background: linear-gradient(135deg, var(--tw-primary-hover) 0%, #6d28d9 100%);
+    box-shadow: 0 6px 20px rgba(var(--tw-primary-rgb), 0.4);
+    transform: translateY(-2px);
+    color: #fff;
 }
 
 .btn-primary:active {
     transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(var(--tw-primary-rgb), 0.3);
 }
 
 .btn-outline-primary {
-    border: 1px solid var(--tw-primary);
+    border: 1.5px solid var(--tw-primary);
     color: var(--tw-primary);
     border-radius: var(--tw-radius-sm);
     padding: 0.625rem 1.25rem;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 0.9rem;
     transition: var(--tw-transition);
+    background: transparent;
 }
 
 .btn-outline-primary:hover {
-    background: var(--tw-primary);
+    background: linear-gradient(135deg, var(--tw-primary) 0%, var(--tw-accent) 100%);
     border-color: var(--tw-primary);
     color: #fff;
     transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(var(--tw-primary-rgb), 0.25);
 }
 
 .btn-outline-secondary {
-    border: 1px solid var(--tw-border);
+    border: 1.5px solid var(--tw-border);
     color: var(--tw-text-muted);
     border-radius: var(--tw-radius-sm);
     transition: var(--tw-transition);
+    font-weight: 500;
 }
 
 .btn-outline-secondary:hover {
     border-color: var(--tw-text-muted);
     color: var(--tw-text);
-    background: var(--tw-bg);
+    background: var(--tw-bg-alt);
 }
 
-/* Tables */
+/* ============================
+   TABLES
+   ============================ */
 .tw-table {
     width: 100%;
     border-collapse: separate;
@@ -251,108 +448,153 @@ textarea.form-control {
 }
 
 .tw-table thead th {
-    font-size: 0.75rem;
-    font-weight: 600;
+    font-size: 0.68rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
     color: var(--tw-text-muted);
-    padding: 0.75rem 1rem;
+    padding: 0.875rem 1rem;
     border-bottom: 2px solid var(--tw-border);
     white-space: nowrap;
+    background: var(--tw-bg);
 }
 
 .tw-table tbody td {
-    padding: 0.75rem 1rem;
+    padding: 0.875rem 1rem;
     border-bottom: 1px solid var(--tw-border);
     font-size: 0.875rem;
     vertical-align: middle;
 }
 
+.tw-table tbody tr {
+    transition: var(--tw-transition);
+}
+
 .tw-table tbody tr:hover {
-    background: var(--tw-bg);
+    background: var(--tw-primary-light);
 }
 
 .tw-table tbody tr:last-child td {
     border-bottom: none;
 }
 
-/* Alerts */
+/* ============================
+   ALERTS
+   ============================ */
 .tw-alert {
     border: none;
     border-radius: var(--tw-radius-sm);
     font-size: 0.875rem;
     font-weight: 500;
-    padding: 0.75rem 1rem;
+    padding: 0.875rem 1.125rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
-/* Avatar */
+.alert-success {
+    background: var(--tw-success-light);
+    color: #065f46;
+    border: 1px solid rgba(5, 150, 105, 0.15);
+}
+
+.alert-danger {
+    background: var(--tw-danger-light);
+    color: #991b1b;
+    border: 1px solid rgba(220, 38, 38, 0.15);
+}
+
+.alert-warning {
+    background: var(--tw-warning-light);
+    color: #92400e;
+    border: 1px solid rgba(217, 119, 6, 0.15);
+}
+
+/* ============================
+   AVATARS
+   ============================ */
 .tw-avatar {
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid var(--tw-border);
+    box-shadow: 0 0 0 2px var(--tw-card-bg);
 }
 
 .tw-avatar-lg {
-    width: 96px;
-    height: 96px;
+    width: 110px;
+    height: 110px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid var(--tw-border);
+    border: 4px solid var(--tw-primary-light);
+    box-shadow: 0 0 0 3px var(--tw-card-bg), 0 8px 24px rgba(var(--tw-primary-rgb), 0.15);
 }
 
-/* Stat card */
+/* ============================
+   STAT CARDS
+   ============================ */
 .tw-stat {
     text-align: center;
-    padding: 1.25rem;
+    padding: 1.5rem 1rem;
 }
 
 .tw-stat-value {
-    font-size: 1.5rem;
-    font-weight: 700;
+    font-size: 1.6rem;
+    font-weight: 800;
     color: var(--tw-text);
+    letter-spacing: -0.02em;
 }
 
 .tw-stat-label {
-    font-size: 0.75rem;
-    font-weight: 600;
+    font-size: 0.68rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
     color: var(--tw-text-muted);
-    margin-top: 0.25rem;
+    margin-top: 0.375rem;
 }
 
-/* User search result item */
+/* ============================
+   USER SEARCH ITEMS
+   ============================ */
 .tw-user-item {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 1rem;
+    gap: 0.875rem;
+    padding: 0.875rem 1rem;
     border-bottom: 1px solid var(--tw-border);
     transition: var(--tw-transition);
     text-decoration: none;
     color: var(--tw-text);
-}
-
-.tw-user-item:hover {
-    background: var(--tw-bg);
-    color: var(--tw-primary);
+    border-radius: var(--tw-radius-sm);
+    margin: 0 -0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 .tw-user-item:last-child {
     border-bottom: none;
 }
 
-/* Badge */
+.tw-user-item:hover {
+    background: var(--tw-primary-light);
+    color: var(--tw-primary);
+    border-bottom-color: transparent;
+}
+
+/* ============================
+   BADGES
+   ============================ */
 .tw-badge {
-    display: inline-block;
-    padding: 0.2rem 0.6rem;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.75rem;
     border-radius: 999px;
-    font-size: 0.7rem;
-    font-weight: 600;
+    font-size: 0.68rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.05em;
 }
 
 .tw-badge-sent {
@@ -365,12 +607,15 @@ textarea.form-control {
     color: var(--tw-success);
 }
 
-/* Pagination */
+/* ============================
+   PAGINATION
+   ============================ */
 .tw-pagination .page-link {
-    border: 1px solid var(--tw-border);
+    border: 1.5px solid var(--tw-border);
     color: var(--tw-text);
-    font-size: 0.875rem;
-    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.5rem 0.875rem;
     border-radius: var(--tw-radius-sm);
     margin: 0 0.125rem;
     transition: var(--tw-transition);
@@ -383,15 +628,18 @@ textarea.form-control {
 }
 
 .tw-pagination .page-item.active .page-link {
-    background: var(--tw-primary);
+    background: linear-gradient(135deg, var(--tw-primary), var(--tw-accent));
     border-color: var(--tw-primary);
     color: #fff;
+    box-shadow: 0 2px 8px rgba(var(--tw-primary-rgb), 0.3);
 }
 
-/* Quick actions grid */
+/* ============================
+   QUICK ACTIONS GRID
+   ============================ */
 .tw-quick-actions {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 0.75rem;
 }
 
@@ -400,65 +648,75 @@ textarea.form-control {
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
-    padding: 1rem;
+    padding: 1.25rem 1rem;
     background: var(--tw-card-bg);
-    border: 1px solid var(--tw-border);
+    border: 1.5px solid var(--tw-border);
     border-radius: var(--tw-radius);
     text-decoration: none;
     color: var(--tw-text);
     font-size: 0.8125rem;
-    font-weight: 500;
+    font-weight: 600;
     transition: var(--tw-transition);
 }
 
 .tw-quick-action:hover {
     border-color: var(--tw-primary);
     color: var(--tw-primary);
-    box-shadow: var(--tw-shadow-md);
-    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(var(--tw-primary-rgb), 0.15);
+    transform: translateY(-3px);
+    background: var(--tw-primary-light);
 }
 
 .tw-quick-action i {
-    font-size: 1.25rem;
-    color: var(--tw-primary);
+    font-size: 1.4rem;
+    color: #fff;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--tw-primary), var(--tw-accent));
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(var(--tw-primary-rgb), 0.25);
 }
 
-/* Empty state */
+/* ============================
+   EMPTY STATE
+   ============================ */
 .tw-empty {
     text-align: center;
-    padding: 3rem 1rem;
+    padding: 3rem 1.5rem;
     color: var(--tw-text-muted);
 }
 
 .tw-empty i {
-    font-size: 2.5rem;
+    font-size: 3.5rem;
     display: block;
-    margin-bottom: 0.75rem;
-    opacity: 0.5;
+    margin-bottom: 1rem;
+    opacity: 0.3;
+    background: linear-gradient(135deg, var(--tw-primary), var(--tw-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
-/* Responsive table wrapper */
+.tw-empty p {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+}
+
+/* ============================
+   RESPONSIVE TABLE WRAPPER
+   ============================ */
 .tw-table-wrap {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    border-radius: var(--tw-radius-sm);
 }
 
-/* Mobile adjustments */
-@media (max-width: 768px) {
-    .tw-main { padding: 1rem 0; }
-    .tw-card { padding: 1rem; }
-    .tw-balance { font-size: 1.75rem; }
-    .tw-auth-card { padding: 1.5rem; margin: 0 1rem; }
-    .tw-avatar-lg { width: 72px; height: 72px; }
-}
-
-/* Smooth focus for accessibility */
-:focus-visible {
-    outline: 2px solid var(--tw-primary);
-    outline-offset: 2px;
-}
-
-/* Comment text in transaction history */
+/* ============================
+   COMMENT TEXT
+   ============================ */
 .tw-comment {
     font-size: 0.8125rem;
     color: var(--tw-text-muted);
@@ -466,13 +724,89 @@ textarea.form-control {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    display: inline-block;
 }
 
-/* Profile bio */
+/* ============================
+   PROFILE BIO
+   ============================ */
 .tw-bio {
     white-space: pre-wrap;
     word-wrap: break-word;
     font-size: 0.9rem;
-    line-height: 1.6;
+    line-height: 1.7;
     color: var(--tw-text);
+}
+
+/* ============================
+   PASSWORD STRENGTH BAR
+   ============================ */
+.progress {
+    background: var(--tw-bg-alt);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    transition: width 0.3s ease, background 0.3s ease;
+}
+
+/* ============================
+   LINK STYLING
+   ============================ */
+a {
+    color: var(--tw-primary);
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: var(--tw-primary-hover);
+}
+
+/* ============================
+   PAGE TITLE STYLING
+   ============================ */
+.tw-page-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--tw-text);
+    margin-bottom: 1.5rem;
+}
+
+/* ============================
+   SCROLLBAR
+   ============================ */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--tw-bg); }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--tw-text-muted); }
+
+/* ============================
+   ACCESSIBILITY
+   ============================ */
+:focus-visible {
+    outline: 2px solid var(--tw-primary);
+    outline-offset: 2px;
+}
+
+/* ============================
+   MOBILE RESPONSIVE
+   ============================ */
+@media (max-width: 768px) {
+    .tw-main { padding: 1rem 0; }
+    .tw-card { padding: 1.25rem; }
+    .tw-balance { font-size: 1.75rem; }
+    .tw-auth-card { padding: 1.75rem; margin: 0 0.75rem; }
+    .tw-avatar-lg { width: 80px; height: 80px; }
+    .tw-quick-actions { gap: 0.5rem; }
+    .tw-quick-action { padding: 1rem 0.5rem; }
+    .tw-quick-action i { width: 40px; height: 40px; font-size: 1.2rem; border-radius: 10px; }
+    .tw-stat-value { font-size: 1.25rem; }
+    .tw-balance-card { padding: 1.5rem; }
+}
+
+@media (max-width: 576px) {
+    .tw-auth-card { max-width: 100%; margin: 0 0.5rem; padding: 1.5rem; }
+    .tw-table thead th, .tw-table tbody td { padding: 0.625rem 0.5rem; font-size: 0.8rem; }
 }

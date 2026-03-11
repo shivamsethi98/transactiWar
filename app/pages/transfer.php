@@ -136,7 +136,7 @@ include __DIR__ . '/../templates/header.php';
             // Show current balance
             $current_user = get_logged_in_user();
             ?>
-            <div class="text-center mb-3 p-3" style="background: var(--tw-bg); border-radius: var(--tw-radius-sm);">
+            <div class="tw-transfer-balance mb-3">
                 <div class="tw-balance-label">Your Balance</div>
                 <div class="tw-balance" style="font-size: 1.5rem;">Rs. <?= format_money($current_user['balance']) ?></div>
             </div>
