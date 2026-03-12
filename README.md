@@ -21,6 +21,9 @@ docker compose version
 # Clone and enter the project directory
 cd transactiWar
 
+# Generate deployment secrets once
+./generate_env.sh
+
 # Build and start the containers
 docker compose up --build -d
 
@@ -29,6 +32,8 @@ docker compose ps
 ```
 
 Access the app at **http://localhost:8080**
+
+For public or proxy-based deployment, update `.env` and set `TRUST_PROXY_HEADERS=1` only if the reverse proxy is trusted and strips spoofed forwarding headers.
 
 To stop the application:
 
@@ -208,6 +213,12 @@ docker compose up --build # Rebuild from scratch
 **Port 8080 already in use:**
 ```bash
 # Change port in docker-compose.yml: "9090:80" instead of "8080:80"
+```
+
+**Missing `.env` / secret errors:**
+```bash
+./generate_env.sh
+docker compose up --build -d
 ```
 
 **MySQL not ready errors:**

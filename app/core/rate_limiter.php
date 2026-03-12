@@ -36,17 +36,27 @@ function check_rate_limit(string $identifier, string $action, int $max_attempts,
 
 function check_login_rate_limit(string $ip, string $username): bool
 {
-    // Max 5 attempts per IP in 15 minutes
-    if (!check_rate_limit('ip:' . $ip, 'login', 5, 900)) {
+    // Max 10 attempts per IP in 15 minutes
+    if (!check_rate_limit('ip:' . $ip, 'login', 10, 900)) {
         return false;
     }
 
-    // Max 10 attempts per username in 15 minutes
-    if (!check_rate_limit('user:' . $username, 'login', 10, 900)) {
-        return false;
-    }
+    // Max 5 failed attempts for the same username from the same IP in 15 minutes.
+    // Avoids a global per-username lockout that another user could weaponize.
+    try {
+        $pdo = get_db();
+        $stmt = $pdo->prepare(
+            'SELECT COUNT(*) FROM login_attempts
+             WHERE ip_address = ? AND username = ? AND success = 0
+             AND attempted_at > DATE_SUB(NOW(), INTERVAL 15 MINUTE)'
+        );
+        $stmt->execute([$ip, $username]);
 
-    return true;
+        return (int) $stmt->fetchColumn() < 5;
+    } catch (PDOException $ex) {
+        error_log('Login rate limiter error: ' . $ex->getMessage());
+        return false; // Fail closed
+    }
 }
 
 function record_login_attempt(string $ip, string $username, bool $success): void

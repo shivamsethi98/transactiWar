@@ -1,4 +1,5 @@
 uploads/avatars/*
 !uploads/avatars/.gitkeep
+.env
 *.docx
 *.txt

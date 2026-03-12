@@ -21,6 +21,10 @@ header('X-Frame-Options: DENY');
 header('Cache-Control: no-store, no-cache, must-revalidate');
 header('Pragma: no-cache');
 
+if (is_https()) {
+    header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
+}
+
 // Only allow GET and POST methods
 if (!in_array($_SERVER['REQUEST_METHOD'], ['GET', 'POST'], true)) {
     http_response_code(405);

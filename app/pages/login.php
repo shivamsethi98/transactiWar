@@ -16,27 +16,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? '';
     $ip       = get_client_ip();
 
-    // Reject oversized passwords early to prevent bcrypt DoS
-    if (strlen($password) > 72) {
-        $error = 'Invalid username or password.';
-    // Rate limit check
-    } elseif (!check_login_rate_limit($ip, $username)) {
+    if (!check_login_rate_limit($ip, $username)) {
         $error = 'Too many login attempts. Please wait 15 minutes.';
     } else {
-        $pdo  = get_db();
-        $stmt = $pdo->prepare('SELECT id, username, password FROM users WHERE username = ?');
-        $stmt->execute([$username]);
-        $user = $stmt->fetch();
-
-        if ($user && password_verify($password, $user['password'])) {
-            // Success
-            record_login_attempt($ip, $username, true);
-            login_user($user);
-            redirect('/dashboard');
-        } else {
-            // Failure — generic message prevents username enumeration
+        // Reject oversized passwords early to prevent bcrypt DoS
+        if (strlen($password) > 72) {
             record_login_attempt($ip, $username, false);
             $error = 'Invalid username or password.';
+        } else {
+            $pdo  = get_db();
+            $stmt = $pdo->prepare('SELECT id, username, password FROM users WHERE username = ?');
+            $stmt->execute([$username]);
+            $user = $stmt->fetch();
+
+            if ($user && password_verify($password, $user['password'])) {
+                // Success
+                record_login_attempt($ip, $username, true);
+                login_user($user);
+                redirect('/dashboard');
+            } else {
+                // Failure — generic message prevents username enumeration
+                record_login_attempt($ip, $username, false);
+                $error = 'Invalid username or password.';
+            }
         }
     }
 }

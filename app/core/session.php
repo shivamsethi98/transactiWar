@@ -17,8 +17,8 @@ function init_session(): void
     ini_set('session.cookie_path', '/');
     ini_set('session.gc_maxlifetime', '1800');
 
-    // Set Secure flag if served over HTTPS
-    if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
+    // Set Secure flag when the request is protected in a trusted deployment setup
+    if (is_https()) {
         ini_set('session.cookie_secure', '1');
     }
 
