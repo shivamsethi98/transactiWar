@@ -65,6 +65,51 @@ Use authenticated healthcheck credentials so readiness checks are accurate and l
 Avoid publishing real or reusable passwords.
 Mark credentials as local-demo only and rotate regularly.
 
+### 6. Enable TLS (HTTPS) for transport security
+
+Current issue in this system:
+- The app is served over HTTP only (`docker-compose.yml` maps `8080:80`).
+- `config/apache.conf` has only `<VirtualHost *:80>` and no TLS listener.
+- Without TLS, login credentials, session cookies, and transfer data can be intercepted or modified on untrusted networks (MITM risk).
+
+Why TLS is important for this system:
+- Encrypts traffic in transit (protects username/password, profile data, transfer details).
+- Prevents session hijacking via network sniffing.
+- Reduces man-in-the-middle tampering risk for requests/responses.
+- Activates stronger cookie protection behavior (`Secure` cookie flag when HTTPS is used).
+- Improves production readiness and compliance posture.
+
+Problems solved by adding TLS:
+- MITM eavesdropping on credentials and session tokens.
+- In-transit modification of sensitive actions (for example, transfer workflows).
+- Browser mixed trust/insecure transport warnings for authenticated pages.
+
+Where changes are needed to enable TLS:
+1. `config/apache.conf`
+- Add HTTPS virtual host (`<VirtualHost *:443>`) with:
+	- `SSLEngine on`
+	- `SSLCertificateFile` and `SSLCertificateKeyFile`
+- Keep or add an HTTP virtual host (`*:80`) that redirects all traffic to HTTPS.
+- Add HSTS header after HTTPS is confirmed working.
+
+2. `Dockerfile`
+- Enable Apache SSL module (`a2enmod ssl`).
+- Ensure TLS site config is copied and enabled.
+- Expose port `443` in addition to `80`.
+
+3. `docker-compose.yml`
+- Publish TLS port (for example `8443:443` or `443:443`).
+- Mount certificate files into the container (for example `./certs:/etc/apache2/certs:ro`).
+- Optionally keep `8080:80` only for redirect to HTTPS.
+
+4. `README.md`
+- Update access URL from `http://localhost:8080` to HTTPS endpoint.
+- Document certificate setup (self-signed for local, CA-issued/Let's Encrypt for deployment).
+
+5. `app/core/session.php` (already TLS-aware)
+- Current logic already sets `session.cookie_secure=1` when HTTPS is detected.
+- No functional redesign needed; enabling HTTPS allows this control to take effect consistently.
+
 ## Verification Checklist
 
 - [ ] No secret literals remain in tracked files
