@@ -3,17 +3,18 @@ services:
     build: .
     container_name: transactiwar-web
     ports:
-      - "80:80"
-      - "443:443"
+      - "8080:80"
+      - "8443:443"
     depends_on:
       db:
         condition: service_healthy
     environment:
-      - DB_HOST=db
-      - DB_NAME=transactiwar
-      - DB_USER=twuser
-      - DB_PASS=tw_secure_password_2026
-      - APP_SECRET=a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2
+      DB_HOST: ${DB_HOST:-db}
+      DB_NAME: ${DB_NAME:-transactiwar}
+      DB_USER: ${DB_USER:-twuser}
+      DB_PASS: ${DB_PASS:?Set DB_PASS in .env}
+      APP_SECRET: ${APP_SECRET:?Set APP_SECRET in .env}
+      TRUST_PROXY_HEADERS: ${TRUST_PROXY_HEADERS:-0}
     volumes:
       - upload_data:/uploads
       - ./certs:/etc/apache2/certs:ro
@@ -24,10 +25,10 @@ services:
     image: mysql:8.0
     container_name: transactiwar-db
     environment:
-      MYSQL_ROOT_PASSWORD: root_password_2026
-      MYSQL_DATABASE: transactiwar
-      MYSQL_USER: twuser
-      MYSQL_PASSWORD: tw_secure_password_2026
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD in .env}
+      MYSQL_DATABASE: ${DB_NAME:-transactiwar}
+      MYSQL_USER: ${DB_USER:-twuser}
+      MYSQL_PASSWORD: ${DB_PASS:?Set DB_PASS in .env}
     volumes:
       - db_data:/var/lib/mysql
       - ./sql/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
