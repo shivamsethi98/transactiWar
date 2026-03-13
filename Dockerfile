@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Enable Apache modules
-RUN a2enmod rewrite headers
+RUN a2enmod rewrite headers ssl
 
 # Copy custom PHP config
 COPY config/php.ini /usr/local/etc/php/conf.d/custom.ini
@@ -44,6 +44,6 @@ COPY setup.sh /setup.sh
 COPY create_accounts.sh /create_accounts.sh
 RUN chmod +x /setup.sh /create_accounts.sh
 
-EXPOSE 80
+EXPOSE 80 443
 
 CMD ["/setup.sh"]
