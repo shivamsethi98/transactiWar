@@ -4,11 +4,30 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
+    // Successful login: brief buffering animation before redirect
+    var loginBuffer = document.getElementById('login-buffer');
+    if (loginBuffer) {
+        var redirectTo = loginBuffer.getAttribute('data-redirect') || '/dashboard';
+        var delayMs = parseInt(loginBuffer.getAttribute('data-delay-ms'), 10);
+
+        if (isNaN(delayMs) || delayMs < 0) {
+            delayMs = 1000;
+        }
+
+        setTimeout(function () {
+            window.location.assign(redirectTo);
+        }, delayMs);
+    }
+
     // Auto-dismiss flash alerts after 5 seconds
     document.querySelectorAll('.tw-alert').forEach(function (alert) {
         setTimeout(function () {
-            var bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
-            bsAlert.close();
+            if (window.bootstrap && bootstrap.Alert) {
+                var bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                bsAlert.close();
+            } else {
+                alert.remove();
+            }
         }, 5000);
     });
 

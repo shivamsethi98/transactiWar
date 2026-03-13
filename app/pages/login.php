@@ -2,6 +2,7 @@
 $page_title = 'Log In — TransactiWar';
 
 $error = '';
+$login_success = false;
 
 // Show timeout/suspicious messages from query params
 $msg = $_GET['msg'] ?? '';
@@ -32,13 +33,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Success
             record_login_attempt($ip, $username, true);
             login_user($user);
-            redirect('/dashboard');
+            $login_success = true;
         } else {
             // Failure — generic message prevents username enumeration
             record_login_attempt($ip, $username, false);
             $error = 'Invalid username or password.';
         }
     }
+}
+
+if ($login_success) {
+    header('Refresh: 1; url=/dashboard');
 }
 
 include __DIR__ . '/../templates/header.php';
@@ -79,6 +84,13 @@ include __DIR__ . '/../templates/header.php';
             Don't have an account? <a href="/register" class="text-decoration-none">Register</a>
         </p>
     </form>
+
+    <?php if ($login_success): ?>
+        <div class="tw-login-buffer" id="login-buffer" data-redirect="/dashboard" data-delay-ms="1000">
+            <div class="spinner-border text-primary" role="status" aria-hidden="true"></div>
+            <p class="mb-0 mt-3">Verifying secure session...</p>
+        </div>
+    <?php endif; ?>
 </div>
 
 <?php include __DIR__ . '/../templates/footer.php'; ?>
