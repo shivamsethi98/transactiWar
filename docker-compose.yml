@@ -3,7 +3,8 @@ services:
     build: .
     container_name: transactiwar-web
     ports:
-      - "8080:80"
+      - "80:80"
+      - "443:443"
     depends_on:
       db:
         condition: service_healthy
@@ -16,6 +17,7 @@ services:
       TRUST_PROXY_HEADERS: ${TRUST_PROXY_HEADERS:-0}
     volumes:
       - upload_data:/uploads
+      - ./certs:/etc/apache2/certs:ro
     networks:
       - tw-network
 
@@ -35,7 +37,8 @@ services:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 5s
       timeout: 5s
-      retries: 10
+      retries: 30
+      start_period: 30s
     networks:
       - tw-network
 

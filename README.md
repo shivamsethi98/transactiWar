@@ -17,6 +17,17 @@ docker compose version
 
 ## Quick Start
 
+Generate local TLS certificates (required before starting containers):
+
+```bash
+mkdir -p certs
+openssl req -x509 -nodes -newkey rsa:2048 \
+	-keyout certs/server.key \
+	-out certs/server.crt \
+	-days 365 \
+	-subj "/CN=localhost"
+```
+
 ```bash
 # Clone and enter the project directory
 cd transactiWar
@@ -32,6 +43,7 @@ docker compose ps
 ```
 
 Access the app at **http://localhost:8080**
+Access the app securely at **https://localhost:8443**
 
 For public or proxy-based deployment, update `.env` and set `TRUST_PROXY_HEADERS=1` only if the reverse proxy is trusted and strips spoofed forwarding headers.
 
@@ -215,11 +227,16 @@ docker compose up --build # Rebuild from scratch
 # Change port in docker-compose.yml: "9090:80" instead of "8080:80"
 ```
 
-**Missing `.env` / secret errors:**
+**Port 8443 already in use:**
 ```bash
-./generate_env.sh
-docker compose up --build -d
+# Change HTTPS mapping in docker-compose.yml: "9443:443" instead of "8443:443"
 ```
+
+## TLS Notes
+
+- Local development uses self-signed certs from `certs/server.crt` and `certs/server.key`.
+- Browsers will show a warning for self-signed certs; this is expected for local setup.
+- For production, replace local certs with CA-issued certificates (for example Let's Encrypt).
 
 **MySQL not ready errors:**
 The setup script automatically retries. If it persists, increase `retries` in the healthcheck config in `docker-compose.yml`.
