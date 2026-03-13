@@ -11,6 +11,9 @@ RewriteRule ^core/ - [F,L]
 RewriteRule ^templates/ - [F,L]
 RewriteRule ^pages/ - [F,L]
 
+# Block PHP execution from the assets path
+RewriteRule ^assets/.*\.php$ - [F,L,NC]
+
 # Don't rewrite actual static assets (CSS, JS, images only)
 RewriteCond %{REQUEST_URI} ^/assets/
 RewriteRule ^ - [L]
@@ -22,8 +25,3 @@ RewriteRule ^ index.php [L,QSA]
 <Files ".htaccess">
     Require all denied
 </Files>
-
-# Block PHP execution in assets directory
-<FilesMatch "^assets/.*\.php$">
-    Require all denied
-</FilesMatch>

@@ -76,6 +76,28 @@ function sanitize_string(string $val, int $max_length = 255): string
     return mb_substr(trim($val), 0, $max_length, 'UTF-8');
 }
 
+function is_https(): bool
+{
+    if (!empty($_SERVER['HTTPS']) && strtolower((string) $_SERVER['HTTPS']) !== 'off') {
+        return true;
+    }
+
+    if (isset($_SERVER['SERVER_PORT']) && (string) $_SERVER['SERVER_PORT'] === '443') {
+        return true;
+    }
+
+    if (getenv('TRUST_PROXY_HEADERS') === '1') {
+        $forwarded_proto = strtolower(trim((string) ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '')));
+        $forwarded_ssl   = strtolower(trim((string) ($_SERVER['HTTP_X_FORWARDED_SSL'] ?? '')));
+
+        if ($forwarded_proto === 'https' || $forwarded_ssl === 'on') {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 function get_client_ip(): string
 {
     // Only trust REMOTE_ADDR; X-Forwarded-For is attacker-controlled

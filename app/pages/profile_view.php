@@ -12,7 +12,7 @@ if ($view_id === current_user_id()) {
 }
 
 $pdo  = get_db();
-$stmt = $pdo->prepare('SELECT id, username, email, full_name, biography, avatar_path, created_at FROM users WHERE id = ?');
+$stmt = $pdo->prepare('SELECT id, username, full_name, biography, avatar_path, created_at FROM users WHERE id = ?');
 $stmt->execute([$view_id]);
 $user = $stmt->fetch();
 
