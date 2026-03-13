@@ -7,11 +7,11 @@ $page_title = 'About — TransactiWar';
  * All output is escaped with e() to prevent XSS.
  */
 $team_members = [
-    ['name' => 'Member 1 Name', 'roll' => 'CS00X0000'],
-    ['name' => 'Member 2 Name', 'roll' => 'CS00X0000'],
-    ['name' => 'Member 3 Name', 'roll' => 'CS00X0000'],
-    ['name' => 'Member 4 Name', 'roll' => 'CS00X0000'],
-    ['name' => 'Member 5 Name', 'roll' => 'CS00X0000'],
+    ['name' => 'Digvijaysing Rajput', 'roll' => 'CS24MTECH14020'],
+    ['name' => 'Vinay Kadari',        'roll' => 'CS24MTECH14008'],
+    ['name' => 'Saswata Mishra',      'roll' => 'CS24MTECH12001'],
+    ['name' => 'Rajesh Krishna',      'roll' => 'CS24MTECH11012'],
+    ['name' => 'Shivam Sethi',        'roll' => 'CS24MTECH12021'],
 ];
 
 include __DIR__ . '/../templates/header.php';
