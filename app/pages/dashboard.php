@@ -41,7 +41,7 @@ include __DIR__ . '/../templates/header.php';
         <div class="tw-card tw-balance-card">
             <div class="tw-balance-label">Your Balance</div>
             <div class="tw-balance">Rs. <?= format_money($user['balance']) ?></div>
-            <p class="text-muted mt-1 mb-0" style="font-size: 0.8rem;">
+            <p class="text-muted mb-0" style="font-size: 0.8rem;">
                 Welcome back, <?= e($user['username']) ?>
             </p>
         </div>
