@@ -49,7 +49,8 @@ if (mt_rand(1, 100) === 1) {
 // Route definitions
 $public_routes    = ['login', 'register'];
 $protected_routes = ['dashboard', 'profile', 'profile_view', 'search', 'transfer', 'history', 'logout', 'avatar'];
-$all_routes       = array_merge($public_routes, $protected_routes);
+$open_routes      = ['about']; // Accessible to both guests and logged-in users
+$all_routes       = array_merge($public_routes, $protected_routes, $open_routes);
 
 // Auth guard
 if (in_array($route, $protected_routes, true)) {

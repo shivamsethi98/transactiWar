@@ -3,6 +3,7 @@ $page_title = 'Log In — TransactiWar';
 
 $error = '';
 $login_success = false;
+$login_redirect_delay_ms = 1000;
 
 // Show timeout/suspicious messages from query params
 $msg = $_GET['msg'] ?? '';
@@ -86,7 +87,9 @@ include __DIR__ . '/../templates/header.php';
     </form>
 
     <?php if ($login_success): ?>
-        <div class="tw-login-buffer" id="login-buffer" data-redirect="/dashboard" data-delay-ms="1000">
+        <div class="tw-login-buffer" id="login-buffer"
+             data-redirect="/dashboard"
+             data-delay-ms="<?= (int) $login_redirect_delay_ms ?>">
             <div class="spinner-border text-primary" role="status" aria-hidden="true"></div>
             <p class="mb-0 mt-3">Verifying secure session...</p>
         </div>

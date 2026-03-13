@@ -257,6 +257,7 @@ body {
     align-items: center;
     text-align: center;
     background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(2px);
     border-radius: inherit;
     color: var(--tw-text);
     font-weight: 600;

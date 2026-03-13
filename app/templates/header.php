@@ -60,6 +60,11 @@
 
             <ul class="navbar-nav">
                 <li class="nav-item">
+                    <a class="nav-link <?= ($route ?? '') === 'about' ? 'active' : '' ?>" href="/about">
+                        <i class="bi bi-info-circle me-1"></i>About
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link <?= ($route ?? '') === 'profile' ? 'active' : '' ?>" href="/profile">
                         <i class="bi bi-person-circle me-1"></i><?= e(current_username() ?? '') ?>
                     </a>
