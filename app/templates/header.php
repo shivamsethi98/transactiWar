@@ -1,5 +1,11 @@
+<?php
+$active_theme = $_SESSION['ui_theme'] ?? 'light';
+if (!in_array($active_theme, ['light', 'dark'], true)) {
+    $active_theme = 'light';
+}
+?>
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="light">
+<html lang="en" data-bs-theme="<?= e($active_theme) ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +26,7 @@
     <!-- Custom CSS -->
     <link href="/assets/css/style.css?v=2" rel="stylesheet">
 </head>
-<body>
+<body data-theme="<?= e($active_theme) ?>">
 
 <?php if (is_logged_in()): ?>
 <!-- Navbar for logged-in users -->
@@ -59,6 +65,19 @@
             </ul>
 
             <ul class="navbar-nav">
+                <li class="nav-item me-1">
+                    <form method="POST" action="/theme_toggle" class="d-inline">
+                        <?= csrf_field() ?>
+                        <input type="hidden" name="redirect_to" value="<?= e($request_uri ?? '/') ?>">
+                        <button type="submit" class="nav-link btn btn-link text-decoration-none tw-theme-toggle" title="Toggle theme">
+                            <?php if ($active_theme === 'dark'): ?>
+                                <i class="bi bi-sun me-1"></i>Light
+                            <?php else: ?>
+                                <i class="bi bi-moon-stars me-1"></i>Dark
+                            <?php endif; ?>
+                        </button>
+                    </form>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link <?= ($route ?? '') === 'about' ? 'active' : '' ?>" href="/about">
                         <i class="bi bi-info-circle me-1"></i>About
