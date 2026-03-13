@@ -17,8 +17,8 @@ function init_session(): void
     ini_set('session.cookie_path', '/');
     ini_set('session.gc_maxlifetime', '1800');
 
-    // Set Secure flag if served over HTTPS
-    if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
+    // Set Secure flag when request is HTTPS (direct or trusted proxy).
+    if (is_https_request()) {
         ini_set('session.cookie_secure', '1');
     }
 
@@ -52,6 +52,27 @@ function init_session(): void
             exit;
         }
     }
+}
+
+function is_https_request(): bool
+{
+    if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
+        return true;
+    }
+
+    if (($_SERVER['SERVER_PORT'] ?? '') === '443') {
+        return true;
+    }
+
+    // Only trust proxy headers when explicitly enabled.
+    if (getenv('TRUST_PROXY_HEADERS') === '1') {
+        $forwarded_proto = strtolower($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '');
+        if ($forwarded_proto === 'https') {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 function generate_fingerprint(): string
