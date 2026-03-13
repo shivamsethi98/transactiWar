@@ -17,20 +17,12 @@ docker compose version
 
 ## Quick Start
 
-Generate local TLS certificates (required before starting containers):
-
-```bash
-mkdir -p certs
-openssl req -x509 -nodes -newkey rsa:2048 \
-	-keyout certs/server.key \
-	-out certs/server.crt \
-	-days 365 \
-	-subj "/CN=localhost"
-```
-
 ```bash
 # Clone and enter the project directory
 cd transactiWar
+
+# Generate deployment secrets (one-time)
+./generate_env.sh
 
 # Build and start the containers
 docker compose up --build -d
@@ -39,8 +31,11 @@ docker compose up --build -d
 docker compose ps
 ```
 
-Access the app at **http://localhost:8080**
-Access the app securely at **https://localhost:8443**
+Access the app at **https://localhost** (HTTPS) [https://localhost:443]
+
+> **Note:** TLS certificates are generated automatically on first startup if none are found.
+> Your browser will show a security warning for the self-signed cert — this is expected for local development.
+> To use your own certificates, place `server.crt` and `server.key` in the `certs/` directory before starting.
 
 To stop the application:
 
@@ -48,6 +43,22 @@ To stop the application:
 docker compose down       # Stop containers (preserves data)
 docker compose down -v    # Stop and remove all data (fresh start)
 ```
+
+## Environment Configuration
+
+Secrets are stored in a `.env` file (excluded from git). The `generate_env.sh` script creates one with random values:
+
+| Variable | Description | Default |
+|---|---|---|
+| `DB_HOST` | MySQL hostname | `db` |
+| `DB_NAME` | Database name | `transactiwar` |
+| `DB_USER` | Database username | `twuser` |
+| `DB_PASS` | Database password | *(random, required)* |
+| `MYSQL_ROOT_PASSWORD` | MySQL root password | *(random, required)* |
+| `APP_SECRET` | HMAC key for session fingerprinting | *(random, required)* |
+| `TRUST_PROXY_HEADERS` | Trust X-Forwarded-Proto headers (set `1` behind a reverse proxy) | `0` |
+
+A `.env.example` template is provided for reference.
 
 ## Test Accounts
 
@@ -68,10 +79,11 @@ New accounts registered through the app also start with Rs. 100.00.
 - **User Registration** — unique username/email, strong password policy (8-72 chars, mixed case, digit, symbol)
 - **Login/Logout** — rate-limited authentication with session management
 - **Profile Management** — edit email, full name, biography; upload profile photo (JPG/PNG/GIF, max 2MB)
-- **View Profiles** — browse other users' public profiles
+- **View Profiles** — browse other users' public profiles (email hidden for privacy)
 - **User Search** — search by username or user ID
 - **Money Transfer** — transfer money with optional comments; prevents negative balances and self-transfers
 - **Transaction History** — paginated list of all sent/received transactions with timestamps
+- **About Page** — team member information, accessible to both guests and logged-in users
 - **Activity Logging** — logs page, username, timestamp, and client IP for every request
 
 ## Tech Stack
@@ -84,6 +96,12 @@ New accounts registered through the app also start with Rs. 100.00.
 ## Security Implementation
 
 All security measures are custom-built (no external security frameworks used).
+
+### Transport Security (TLS/HTTPS)
+- HTTP → HTTPS 301 redirect enforced at Apache level
+- Self-signed TLS certificates auto-generated on first startup
+- HSTS header (`max-age=31536000; includeSubDomains`) sent conditionally over HTTPS
+- `is_https()` helper supports standard HTTPS detection and trusted proxy headers
 
 ### SQL Injection Prevention
 - PDO with native prepared statements (`EMULATE_PREPARES=false`)
@@ -131,11 +149,19 @@ All security measures are custom-built (no external security frameworks used).
 - Search: 60 per user / minute
 - Fails closed on DB error (prevents bypass)
 
-### HTTP Security
-- Security headers set at both Apache and PHP levels (defense in depth)
-- `Content-Security-Policy`, `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`
-- `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy`
-- `Cache-Control: no-store` on dynamic pages
+### HTTP Security Headers
+Security headers set at both Apache and PHP levels (defense in depth):
+
+| Header | Value |
+|---|---|
+| `Content-Security-Policy` | `default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' ...` |
+| `X-Frame-Options` | `DENY` |
+| `X-Content-Type-Options` | `nosniff` |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` |
+| `Permissions-Policy` | `camera=(), microphone=(), geolocation=()` |
+| `Strict-Transport-Security` | `max-age=31536000; includeSubDomains` (HTTPS only) |
+| `Cache-Control` | `no-store, no-cache, must-revalidate` |
+
 - HTTP method restriction: only GET and POST allowed (405 on others)
 - Open redirect prevention: `redirect()` validates relative paths only
 
@@ -149,8 +175,9 @@ All security measures are custom-built (no external security frameworks used).
 
 ### Access Control
 - `.htaccess` blocks direct access to `core/`, `templates/`, `pages/` directories
+- PHP execution blocked in `assets/` via RewriteRule
 - Hidden files blocked via Apache `FilesMatch`
-- PHP execution blocked in `assets/` directory
+- `.env` inaccessible via HTTP (403)
 - Single entry point router (`index.php`) enforces auth guards on all routes
 
 ## Project Structure
@@ -165,7 +192,7 @@ transactiWar/
 │   │   ├── session.php         #   Session management + fingerprinting
 │   │   ├── csrf.php            #   CSRF token generation/validation
 │   │   ├── auth.php            #   Authentication guards
-│   │   ├── security.php        #   Input validation + output encoding
+│   │   ├── security.php        #   Input validation + output encoding + is_https()
 │   │   ├── rate_limiter.php    #   Rate limiting (fail-closed)
 │   │   ├── logger.php          #   Activity logging
 │   │   ├── upload.php          #   Secure avatar upload
@@ -179,10 +206,11 @@ transactiWar/
 │   │   ├── transfer.php        #   Money transfer with row locking
 │   │   ├── search.php          #   User search (by ID or username)
 │   │   ├── history.php         #   Transaction history (paginated)
+│   │   ├── about.php           #   Team members and project info
 │   │   ├── avatar.php          #   Secure avatar image serving
 │   │   └── logout.php          #   Session destruction (POST-only)
 │   ├── templates/              # Shared HTML templates
-│   │   ├── header.php          #   Head + navbar
+│   │   ├── header.php          #   Head + navbar (with About link)
 │   │   ├── footer.php          #   Footer + scripts
 │   │   └── alerts.php          #   Flash message display
 │   └── assets/                 # Static files (CSS, JS, images)
@@ -191,10 +219,13 @@ transactiWar/
 │   └── seed.sql                # Seed data placeholder
 ├── config/
 │   ├── php.ini                 # Hardened PHP configuration
-│   └── apache.conf             # VirtualHost + security headers
+│   └── apache.conf             # VirtualHost + TLS + security headers
+├── certs/                      # TLS certificates (auto-generated or user-provided)
 ├── Dockerfile                  # PHP 8.2 + Apache image
 ├── docker-compose.yml          # Multi-container orchestration
-├── setup.sh                    # Container startup script
+├── .env.example                # Environment variable template
+├── generate_env.sh             # Auto-generates .env with random secrets
+├── setup.sh                    # Container startup (TLS + DB wait + accounts)
 ├── create_accounts.sh          # Test account creation
 └── uploads/avatars/            # Avatar storage (outside webroot)
 ```
@@ -217,27 +248,36 @@ docker compose down -v    # Remove old volumes
 docker compose up --build # Rebuild from scratch
 ```
 
-**Port 8080 already in use:**
+**Port 80 or 443 already in use:**
 ```bash
-# Change port in docker-compose.yml: "9090:80" instead of "8080:80"
+# Check what is using the port
+sudo lsof -i :80
+# Change port in docker-compose.yml, e.g. "8080:80" and "8443:443"
+# Then update config/apache.conf redirect rule to match the HTTPS port
 ```
-
-**Port 8443 already in use:**
-```bash
-# Change HTTPS mapping in docker-compose.yml: "9443:443" instead of "8443:443"
-```
-
-## TLS Notes
-
-- Local development uses self-signed certs from `certs/server.crt` and `certs/server.key`.
-- Browsers will show a warning for self-signed certs; this is expected for local setup.
-- For production, replace local certs with CA-issued certificates (for example Let's Encrypt).
 
 **MySQL not ready errors:**
 The setup script automatically retries. If it persists, increase `retries` in the healthcheck config in `docker-compose.yml`.
 
 **Rate limit lockout during testing:**
 Wait 15 minutes, or restart containers with `docker compose down -v && docker compose up --build -d`.
+
+## TLS Notes
+
+- TLS certificates are auto-generated inside the container on first startup if none are provided
+- To provide your own certs, place `server.crt` and `server.key` in the `certs/` directory
+- Browsers will show a warning for self-signed certs; this is expected for local setup
+- For production, replace with CA-issued certificates (e.g., Let's Encrypt)
+
+## Team
+
+Built by students of IIT Hyderabad for CS6903 Network Security:
+
+- Digvijaysing Rajput (CS24MTECH14020)
+- Vinay Kadari (CS24MTECH14008)
+- Saswata Mishra (CS24MTECH12001)
+- Rajesh Krishna (CS24MTECH11012)
+- Shivam Sethi (CS24MTECH12021)
 
 ## References
 

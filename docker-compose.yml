@@ -17,7 +17,7 @@ services:
       TRUST_PROXY_HEADERS: ${TRUST_PROXY_HEADERS:-0}
     volumes:
       - upload_data:/uploads
-      - ./certs:/etc/apache2/certs:ro
+      - ./certs:/etc/apache2/certs
     networks:
       - tw-network
 
