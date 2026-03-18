@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($result) {
                 set_flash('success', 'Profile photo updated.');
             } else {
-                set_flash('error', 'Upload failed. Accepted: JPG, PNG, GIF up to 2MB.');
+                set_flash('error', 'Upload failed. Accepted: JPG, PNG, GIF up to 2MB & Required Low Dimension');
             }
         } else {
             set_flash('error', 'No file selected.');

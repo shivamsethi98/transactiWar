@@ -14,6 +14,7 @@ services:
       DB_USER: ${DB_USER:-twuser}
       DB_PASS: ${DB_PASS:?Set DB_PASS in .env}
       APP_SECRET: ${APP_SECRET:?Set APP_SECRET in .env}
+      APP_BASE_URL: ${APP_BASE_URL:-https://localhost}
       TRUST_PROXY_HEADERS: ${TRUST_PROXY_HEADERS:-0}
     volumes:
       - upload_data:/uploads

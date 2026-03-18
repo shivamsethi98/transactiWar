@@ -5,6 +5,21 @@ CERT_DIR="/etc/apache2/certs"
 CERT_FILE="$CERT_DIR/server.crt"
 KEY_FILE="$CERT_DIR/server.key"
 APACHE_CONF="/etc/apache2/sites-available/000-default.conf"
+APP_BASE_URL="${APP_BASE_URL:-https://localhost}"
+
+configure_canonical_origin() {
+    APP_BASE_URL="${APP_BASE_URL%/}"
+
+    case "$APP_BASE_URL" in
+        http://*|https://*) ;;
+        *)
+            echo "APP_BASE_URL must start with http:// or https://" >&2
+            exit 1
+            ;;
+    esac
+
+    sed -i "s|__APP_BASE_URL__|$APP_BASE_URL|g" "$APACHE_CONF"
+}
 
 ensure_tls_certificates() {
     if [[ -s "$CERT_FILE" && -s "$KEY_FILE" ]]; then
@@ -33,6 +48,7 @@ ensure_tls_certificates() {
 }
 
 echo "=== TransactiWar Setup ==="
+configure_canonical_origin
 ensure_tls_certificates
 echo "Waiting for MySQL to be ready..."
 
@@ -46,6 +62,8 @@ echo "MySQL is ready."
 # Create test accounts
 echo "Creating test accounts..."
 /create_accounts.sh
+
+apache2ctl -t
 
 echo "Setup complete. Starting Apache..."
 exec apache2-foreground

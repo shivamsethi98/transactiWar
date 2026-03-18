@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (file) {
                 // Client-side size check (2MB)
                 if (file.size > 2 * 1024 * 1024) {
-                    alert('File too large. Maximum size is 2MB.');
+                    alert('File too large or High Dimensions. Maximum size is 2MB.');
                     this.value = '';
                     return;
                 }

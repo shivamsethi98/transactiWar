@@ -56,7 +56,10 @@ Secrets are stored in a `.env` file (excluded from git). The `generate_env.sh` s
 | `DB_PASS` | Database password | *(random, required)* |
 | `MYSQL_ROOT_PASSWORD` | MySQL root password | *(random, required)* |
 | `APP_SECRET` | HMAC key for session fingerprinting | *(random, required)* |
+| `APP_BASE_URL` | Canonical public origin used for redirects and absolute URLs | `https://localhost` |
 | `TRUST_PROXY_HEADERS` | Trust X-Forwarded-Proto headers (set `1` behind a reverse proxy) | `0` |
+
+For VM deployment, set `APP_BASE_URL` to the exact public origin of your site, for example `https://10.96.0.149`.
 
 A `.env.example` template is provided for reference.
 
@@ -100,7 +103,7 @@ New accounts registered through the app also start with Rs. 100.00.
 All security measures are custom-built (no external security frameworks used).
 
 ### Transport Security (TLS/HTTPS)
-- HTTP → HTTPS 301 redirect enforced at Apache level
+- HTTP → HTTPS 301 redirect enforced at Apache level using the configured canonical origin (`APP_BASE_URL`)
 - Self-signed TLS certificates auto-generated on first startup
 - HSTS header (`max-age=31536000; includeSubDomains`) sent conditionally over HTTPS
 - `is_https()` helper supports standard HTTPS detection and trusted proxy headers
@@ -270,6 +273,28 @@ Wait 15 minutes, or restart containers with `docker compose down -v && docker co
 - To provide your own certs, place `server.crt` and `server.key` in the `certs/` directory
 - Browsers will show a warning for self-signed certs; this is expected for local setup
 - For production, replace with CA-issued certificates (e.g., Let's Encrypt)
+
+## Team Site IP Markdown
+
+This repository includes a helper script that generates a markdown file with:
+
+- Team-wise site IP table (all 19 teams)
+- User roster from `Phase2.csv` with Team No. and Site IP columns
+
+Files used:
+
+- `team_site_ip.csv` (team number to site IP mapping)
+- `user_team_map.csv` (username to team number mapping)
+
+Generate/update the markdown:
+
+```bash
+./generate_team_site_md.sh
+```
+
+Output file:
+
+- `team_site_ips.md`
 
 ## Team
 
