@@ -39,10 +39,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($action === 'update_avatar') {
         if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] !== UPLOAD_ERR_NO_FILE) {
             $result = handle_avatar_upload($_FILES['avatar'], current_user_id());
-            if ($result) {
+            if ($result['ok']) {
                 set_flash('success', 'Profile photo updated.');
             } else {
-                set_flash('error', 'Upload failed. Accepted: JPG, PNG, GIF up to 2MB & Required Low Dimension');
+                set_flash('error', $result['error'] ?? 'Upload failed. Please try again.');
             }
         } else {
             set_flash('error', 'No file selected.');
@@ -88,7 +88,7 @@ include __DIR__ . '/../templates/header.php';
                 <input type="hidden" name="action" value="update_avatar">
                 <input type="file" class="form-control mb-2" id="avatar-input" name="avatar"
                        accept="image/jpeg,image/png,image/gif">
-                <small class="text-muted d-block mb-3">JPG, PNG, or GIF. Max 2MB.</small>
+                <small class="text-muted d-block mb-3">JPG, PNG, or GIF. Max 2MB and 4000x4000 pixels.</small>
                 <button type="submit" class="btn btn-outline-primary btn-sm w-100">
                     <i class="bi bi-upload me-1"></i>Upload Photo
                 </button>

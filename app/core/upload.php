@@ -4,23 +4,46 @@
  * Multi-layer defense: extension → MIME → getimagesize → GD re-creation → random name.
  */
 
-function handle_avatar_upload(array $file, int $user_id): string|false
+const AVATAR_MAX_BYTES = 2 * 1024 * 1024;
+const AVATAR_MAX_WIDTH = 4000;
+const AVATAR_MAX_HEIGHT = 4000;
+
+function avatar_upload_result(bool $ok, ?string $filename = null, ?string $error = null): array
+{
+    return [
+        'ok' => $ok,
+        'filename' => $filename,
+        'error' => $error,
+    ];
+}
+
+function avatar_upload_error_for_code(int $error_code): string
+{
+    return match ($error_code) {
+        UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE => 'File size must be at most 2MB.',
+        UPLOAD_ERR_PARTIAL => 'Upload was interrupted. Please try again.',
+        UPLOAD_ERR_NO_TMP_DIR, UPLOAD_ERR_CANT_WRITE, UPLOAD_ERR_EXTENSION => 'Upload failed on the server. Please try again.',
+        default => 'Upload failed. Please try again.',
+    };
+}
+
+function handle_avatar_upload(array $file, int $user_id): array
 {
     // Check for upload errors
     if ($file['error'] !== UPLOAD_ERR_OK) {
-        return false;
+        return avatar_upload_result(false, error: avatar_upload_error_for_code($file['error']));
     }
 
     // Size limit: 2MB
-    if ($file['size'] > 2 * 1024 * 1024) {
-        return false;
+    if ($file['size'] > AVATAR_MAX_BYTES) {
+        return avatar_upload_result(false, error: 'File size must be at most 2MB.');
     }
 
     // Extension allowlist
     $allowed_ext = ['jpg', 'jpeg', 'png', 'gif'];
     $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
     if (!in_array($ext, $allowed_ext, true)) {
-        return false;
+        return avatar_upload_result(false, error: 'File must be a JPG, PNG, or GIF image.');
     }
 
     // MIME type check via finfo (magic bytes, not user-supplied Content-Type)
@@ -34,7 +57,7 @@ function handle_avatar_upload(array $file, int $user_id): string|false
     ];
 
     if (!isset($allowed_mimes[$mime])) {
-        return false;
+        return avatar_upload_result(false, error: 'File must be a valid JPG, PNG, or GIF image.');
     }
 
     $true_ext = $allowed_mimes[$mime];
@@ -42,13 +65,13 @@ function handle_avatar_upload(array $file, int $user_id): string|false
     // Validate image dimensions
     $image_info = getimagesize($file['tmp_name']);
     if ($image_info === false) {
-        return false;
+        return avatar_upload_result(false, error: 'Selected file is not a valid image.');
     }
 
     $width  = $image_info[0];
     $height = $image_info[1];
-    if ($width < 1 || $height < 1 || $width > 4000 || $height > 4000) {
-        return false;
+    if ($width < 1 || $height < 1 || $width > AVATAR_MAX_WIDTH || $height > AVATAR_MAX_HEIGHT) {
+        return avatar_upload_result(false, error: 'Image dimensions must not exceed 4000x4000 pixels.');
     }
 
     // RE-CREATE image with GD (strips metadata, embedded code, polyglot tricks)
@@ -60,7 +83,7 @@ function handle_avatar_upload(array $file, int $user_id): string|false
     };
 
     if (!$source) {
-        return false;
+        return avatar_upload_result(false, error: 'Image could not be processed. Please use a different file.');
     }
 
     // Preserve transparency for PNG/GIF
@@ -85,7 +108,7 @@ function handle_avatar_upload(array $file, int $user_id): string|false
     imagedestroy($source);
 
     if (!$saved) {
-        return false;
+        return avatar_upload_result(false, error: 'Image could not be saved. Please try again.');
     }
 
     // Delete old avatar
@@ -105,5 +128,5 @@ function handle_avatar_upload(array $file, int $user_id): string|false
     $stmt = $pdo->prepare('UPDATE users SET avatar_path = ? WHERE id = ?');
     $stmt->execute([$filename, $user_id]);
 
-    return $filename;
+    return avatar_upload_result(true, filename: $filename);
 }

@@ -74,17 +74,37 @@ document.addEventListener('DOMContentLoaded', function () {
             if (file) {
                 // Client-side size check (2MB)
                 if (file.size > 2 * 1024 * 1024) {
-                    alert('File too large or High Dimensions. Maximum size is 2MB.');
+                    alert('File size must be at most 2MB.');
                     this.value = '';
                     return;
                 }
 
-                var reader = new FileReader();
-                reader.onload = function (e) {
+                var objectUrl = URL.createObjectURL(file);
+                var image = new Image();
+
+                image.onload = function () {
+                    if (image.naturalWidth > 4000 || image.naturalHeight > 4000) {
+                        alert('Image dimensions must not exceed 4000x4000 pixels.');
+                        avatarInput.value = '';
+                        URL.revokeObjectURL(objectUrl);
+                        return;
+                    }
+
                     var preview = document.getElementById('avatar-preview');
-                    if (preview) preview.src = e.target.result;
+                    if (preview) {
+                        preview.src = objectUrl;
+                    } else {
+                        URL.revokeObjectURL(objectUrl);
+                    }
                 };
-                reader.readAsDataURL(file);
+
+                image.onerror = function () {
+                    alert('Selected file is not a valid image.');
+                    avatarInput.value = '';
+                    URL.revokeObjectURL(objectUrl);
+                };
+
+                image.src = objectUrl;
             }
         });
     }
