@@ -41,6 +41,7 @@ RUN chown -R www-data:www-data /var/www/html \
 
 # Copy setup scripts and SQL
 COPY sql/ /sql/
+COPY Phase2.csv /tmp/phase2.csv
 COPY setup.sh /setup.sh
 COPY create_accounts.sh /create_accounts.sh
 RUN chmod +x /setup.sh /create_accounts.sh

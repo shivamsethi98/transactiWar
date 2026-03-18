@@ -72,6 +72,8 @@ Five pre-created accounts are available for evaluation:
 | diana_patel     | Diana@Transact#7    | Diana Patel     | Rs. 100.00      |
 | eve_gupta       | Eve#Guard@2026      | Eve Gupta       | Rs. 100.00      |
 
+Additional users are auto-imported from `Phase2.csv` at container startup (username/email/name/password columns), so those credentials can also log in immediately.
+
 New accounts registered through the app also start with Rs. 100.00.
 
 ## Features
