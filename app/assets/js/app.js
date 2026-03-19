@@ -79,32 +79,37 @@ document.addEventListener('DOMContentLoaded', function () {
                     return;
                 }
 
-                var objectUrl = URL.createObjectURL(file);
+                var reader = new FileReader();
                 var image = new Image();
 
                 image.onload = function () {
                     if (image.naturalWidth > 4000 || image.naturalHeight > 4000) {
                         alert('Image dimensions must not exceed 4000x4000 pixels.');
                         avatarInput.value = '';
-                        URL.revokeObjectURL(objectUrl);
                         return;
                     }
 
                     var preview = document.getElementById('avatar-preview');
                     if (preview) {
-                        preview.src = objectUrl;
-                    } else {
-                        URL.revokeObjectURL(objectUrl);
+                        preview.src = image.src;
                     }
                 };
 
                 image.onerror = function () {
                     alert('Selected file is not a valid image.');
                     avatarInput.value = '';
-                    URL.revokeObjectURL(objectUrl);
                 };
 
-                image.src = objectUrl;
+                reader.onload = function (e) {
+                    image.src = e.target.result;
+                };
+
+                reader.onerror = function () {
+                    alert('Selected file could not be read. Please try a different image.');
+                    avatarInput.value = '';
+                };
+
+                reader.readAsDataURL(file);
             }
         });
     }
