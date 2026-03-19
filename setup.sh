@@ -95,6 +95,7 @@ ensure_tls_certificates() {
         -out "$CERT_FILE" \
         -days 365 \
         -subj "/CN=$cert_host" \
+        -addext "basicConstraints=critical,CA:FALSE" \
         -addext "subjectAltName=$cert_san" >/dev/null 2>&1
 }
 
