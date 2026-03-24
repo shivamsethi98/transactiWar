@@ -17,10 +17,9 @@ function init_session(): void
     ini_set('session.cookie_path', '/');
     ini_set('session.gc_maxlifetime', '1800');
 
-    // Set Secure flag when request is HTTPS (direct or trusted proxy).
-    if (is_https_request()) {
-        ini_set('session.cookie_secure', '1');
-    }
+    // Always set Secure flag — this application is HTTPS-only by design.
+    // Prevents session cookies from leaking over plaintext HTTP connections.
+    ini_set('session.cookie_secure', '1');
 
     session_start();
 

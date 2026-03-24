@@ -15,15 +15,21 @@ require_once __DIR__ . '/core/rate_limiter.php';
 require_once __DIR__ . '/core/upload.php';
 require_once __DIR__ . '/core/helpers.php';
 
+// Enforce HTTPS at the application level — block content serving over plaintext.
+// This prevents SSL-stripping proxies from relaying application pages over HTTP.
+if (!is_https()) {
+    $base = getenv('APP_BASE_URL') ?: 'https://localhost';
+    header('Location: ' . rtrim($base, '/') . $_SERVER['REQUEST_URI'], true, 301);
+    header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
+    exit;
+}
+
 // Security headers (defense in depth — also set via Apache)
 header('X-Content-Type-Options: nosniff');
 header('X-Frame-Options: DENY');
 header('Cache-Control: no-store, no-cache, must-revalidate');
 header('Pragma: no-cache');
-
-if (is_https()) {
-    header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
-}
+header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
 
 // Only allow GET and POST methods
 if (!in_array($_SERVER['REQUEST_METHOD'], ['GET', 'POST'], true)) {
